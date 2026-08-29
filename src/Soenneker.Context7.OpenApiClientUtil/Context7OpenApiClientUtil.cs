@@ -14,7 +14,7 @@ using Soenneker.Utils.AsyncSingleton;
 
 namespace Soenneker.Context7.OpenApiClientUtil;
 
-///<inheritdoc cref="IContext7OpenApiClientUtil"/>
+/// <inheritdoc cref="IContext7OpenApiClientUtil"/>
 public sealed class Context7OpenApiClientUtil : IContext7OpenApiClientUtil
 {
     private readonly AsyncSingleton<Context7OpenApiClient> _client;
