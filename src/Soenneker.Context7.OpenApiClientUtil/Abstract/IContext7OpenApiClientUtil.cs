@@ -3,15 +3,16 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 namespace Soenneker.Context7.OpenApiClientUtil.Abstract;
+
 /// <summary>
-/// Exposes a cached OpenAPI client instance.
+/// Provides a lazily created Context7 OpenAPI client for the service lifetime.
 /// </summary>
-public interface IContext7OpenApiClientUtil: IDisposable, IAsyncDisposable
+public interface IContext7OpenApiClientUtil : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Returns the configured context7 OpenAPI Client used by the Context7 OpenAPI Client.
+    /// Returns the cached, configured Context7 OpenAPI client.
     /// </summary>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>A task whose result is the requested context7 OpenAPI Client.</returns>
+    /// <returns>A task whose result is the generated client.</returns>
     ValueTask<Context7OpenApiClient> Get(CancellationToken cancellationToken = default);
 }
