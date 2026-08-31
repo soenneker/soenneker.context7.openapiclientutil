@@ -30,7 +30,7 @@ public static class Context7OpenApiClientUtilRegistrar
     /// <returns>The same service collection, so additional registrations can be chained.</returns>
     public static IServiceCollection AddContext7OpenApiClientUtilAsScoped(this IServiceCollection services)
     {
-        services.AddContext7OpenApiHttpClientAsScoped()
+        services.AddContext7OpenApiHttpClientAsSingleton()
                 .TryAddScoped<IContext7OpenApiClientUtil, Context7OpenApiClientUtil>();
 
         return services;

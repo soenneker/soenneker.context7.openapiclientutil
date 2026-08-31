@@ -16,24 +16,23 @@ namespace Soenneker.Context7.OpenApiClientUtil;
 /// <inheritdoc cref="IContext7OpenApiClientUtil"/>
 public sealed class Context7OpenApiClientUtil : IContext7OpenApiClientUtil
 {
-    private readonly AsyncSingleton<ClientState> _client;
+    private readonly AsyncSingleton<Context7OpenApiClient> _client;
 
     public Context7OpenApiClientUtil(IContext7OpenApiHttpClient httpClientUtil, IConfiguration configuration)
     {
-        _client = new AsyncSingleton<ClientState>(async token =>
+        _client = new AsyncSingleton<Context7OpenApiClient>(async token =>
         {
             HttpClient httpClient = await httpClientUtil.Get(token).NoSync();
 
             var requestAdapter = new HttpClientRequestAdapter(new AnonymousAuthenticationProvider(), httpClient: httpClient);
 
-            return new ClientState(new Context7OpenApiClient(requestAdapter), requestAdapter);
+            return new Context7OpenApiClient(requestAdapter);
         });
     }
 
-    public async ValueTask<Context7OpenApiClient> Get(CancellationToken cancellationToken = default)
+    public ValueTask<Context7OpenApiClient> Get(CancellationToken cancellationToken = default)
     {
-        ClientState state = await _client.Get(cancellationToken).NoSync();
-        return state.Client;
+        return _client.Get(cancellationToken);
     }
 
     public void Dispose()
@@ -44,23 +43,5 @@ public sealed class Context7OpenApiClientUtil : IContext7OpenApiClientUtil
     public ValueTask DisposeAsync()
     {
         return _client.DisposeAsync();
-    }
-
-    private sealed class ClientState : IDisposable
-    {
-        private readonly HttpClientRequestAdapter _requestAdapter;
-
-        public Context7OpenApiClient Client { get; }
-
-        public ClientState(Context7OpenApiClient client, HttpClientRequestAdapter requestAdapter)
-        {
-            Client = client;
-            _requestAdapter = requestAdapter;
-        }
-
-        public void Dispose()
-        {
-            _requestAdapter.Dispose();
-        }
     }
 }

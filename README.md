@@ -5,7 +5,7 @@
 
 # Soenneker.Context7.OpenApiClientUtil
 
-Creates and owns a configured, reusable Context7 Kiota client for dependency-injection applications.
+Provides a lazily created, reusable Context7 Kiota client backed by the configured Context7 HTTP provider.
 
 ## Install
 
@@ -35,7 +35,7 @@ var services = new ServiceCollection();
 services.AddContext7OpenApiClientUtilAsSingleton();
 ```
 
-Use `AddContext7OpenApiClientUtilAsScoped()` when each dependency-injection scope should own its own generated client and request adapter.
+Use `AddContext7OpenApiClientUtilAsScoped()` when each application scope should cache its own generated client while sharing the singleton HTTP provider.
 
 ## Usage
 
@@ -65,6 +65,6 @@ public sealed class DocumentationSearch(IContext7OpenApiClientUtil clientUtil)
 ## Practical notes
 
 - Configuration is captured when the underlying HTTP client is first created. Recreate the service lifetime to apply a changed API key or base URL.
-- The utility owns the Kiota request adapter and releases it when dependency injection disposes the utility. Do not dispose the returned generated client or its transport separately.
+- Both registrations use a singleton HTTP provider. Disposing a scoped utility releases its generated-client reference without removing the shared `HttpClient`; the HTTP provider disposes that client when the application container shuts down.
 - Generated endpoint results may be nullable, and service errors are surfaced through generated error models or Kiota exceptions.
 - Redact API keys and authorization headers from logs, traces, and exception diagnostics.
