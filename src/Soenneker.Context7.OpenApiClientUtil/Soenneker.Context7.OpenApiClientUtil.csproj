@@ -44,7 +44,7 @@
 
     <ItemGroup>
         <PackageReference Include="Soenneker.Context7.HttpClients" Version="4.0.21" />
-        <PackageReference Include="Soenneker.Context7.OpenApiClient" Version="4.0.6" />
+        <PackageReference Include="Soenneker.Context7.OpenApiClient" Version="4.0.7" />
         <PackageReference Include="Soenneker.Utils.AsyncSingleton" Version="4.0.820" />
     </ItemGroup>
 </Project>
